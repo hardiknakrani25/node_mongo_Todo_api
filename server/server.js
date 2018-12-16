@@ -1,69 +1,35 @@
-var mongoose=require('mongoose');
+var express=require('express');
+var bodyParser=require('body-parser');
 
-mongoose.Promise=global.Promise;
-mongoose.connect('mongodb://localhost:27019/TodoApp');
 
-var Todo=mongoose.model('Todo',{
-    text:{
-type:String,
-require:true,
-minlength:1,
-trim:true
-    },
-    completed:{
-type:Boolean,
-default:false
-    },
-    completedAt:{
-type:Number,
-default:null
-    }
+
+var {mongoose}=require('./db/mongoose');
+var {Todo}=require('./models/todo');
+var {user}=require('./models/user');
+
+var app=express();
+
+app.use(bodyParser.json());
+
+app.post('/todos',(req,res)=>{
+
+
+    var todo=new Todo({
+text:req.body.text
+    }).save().then((result) => {
+       res.send(result);
+        
+    }).catch((err) => {
+        res.status(400).send(err);
+        console.log(err);
+        
+    });
+
 })
 
 
 
-
-
-/* var newTodo=new Todo({text:'Cook dinner'})
-newTodo.save().then((result) => {
-    console.log(result);
+app.listen(3000,()=>{
+    console.log(`Started on port 3000`);
     
-}).catch((err) => {
-    console.log(err);
-    
-});
-
-var othertodo=new Todo({
-    text:'Feed the cat',
-    completed:true,
-    completedAt:123
 })
-othertodo.save().then((result) => {
-    console.log(result);
-    
-}).catch((err) => {
-    console.log(err);
-    
-}); */
-
-
-
-var user=mongoose.model('User',{
-    email:{
-        type:String,
-        required:true,
-        trim:true,
-        minlength:1
-    }
-})
-
-var user=new user({
-email:'hdnakarani@gmail.com'
-})
-user.save().then((result) => {
-    console.log('user saved',result);
-    
-}).catch((err) => {
-    console.log(err);
-    
-});
