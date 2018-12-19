@@ -1,6 +1,13 @@
 const {SHA256}=require('crypto-js');
 const jwt=require('jsonwebtoken');
+const bcrypt=require('bcryptjs');
 
+
+
+
+
+/* 
+//jsonwebtoken
 var data={
     id:10
 };
@@ -12,8 +19,8 @@ var decoded=jwt.verify(token,'123abc');
 console.log('decoded',decoded);
 
 
-
-
+ */
+//crypto-js
 /* var message ="I am number 2";
 var hash=SHA256(message).toString();
 console.log(`message ${message}`);
@@ -38,3 +45,21 @@ if(resulthash===token.hash){
 }
 else console.log('Data was changed dont trust');
  */
+
+
+ //bcryptjs
+ var password='123asd!';
+/* 
+
+ bcrypt.genSalt(10,(err,salt)=>{
+    bcrypt.hash(password,salt,(err,hash)=>{
+        console.log(hash);
+        
+    })
+}) */
+
+var hsashedPassword='$2a$10$0mf23iAFyadKEt15LyA1sepjDQejz5HX598zwVDa9VLo.DeJobUqq';
+bcrypt.compare(password,hsashedPassword,(err,res)=>{
+    console.log(res);
+    
+})
